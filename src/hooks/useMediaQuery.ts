@@ -19,3 +19,11 @@ export function useMediaQuery(query: string) {
 
   return matches;
 }
+
+export function useBreakpoints() {
+  return {
+    sm: useMediaQuery("(min-width: 640px)"),
+    md: useMediaQuery("(min-width: 768px)"),
+    lg: useMediaQuery("(min-width: 1024px)"),
+  };
+}

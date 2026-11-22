@@ -20,7 +20,7 @@ import {
   DockerIcon,
   GitIcon,
 } from "@dev.icons/react";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useBreakpoints } from "@/hooks/useMediaQuery";
 
 const TECH_STACK = [
   { name: "HTML", Icon: Html5, accent: "#f16529" },
@@ -42,9 +42,7 @@ const TECH_STACK = [
 ] satisfies { name: string; Icon: Icon, accent: string; className?: string }[];
 
 const TechStack = () => {
-  const sm = useMediaQuery("(min-width: 640px)");
-  const md = useMediaQuery("(min-width: 768px)");
-  const lg = useMediaQuery("(min-width: 1024px)");
+  const { lg, md, sm } = useBreakpoints();
 
   const honeyComb = buildHoneycombGrid({
     innerGridCols: lg ? 6 : md ? 5 : sm ? 4 : 3,
