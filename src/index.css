@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "@fontsource-variable/dm-sans";
-@import "@fontsource-variable/space-grotesk";;
+@import "@fontsource-variable/space-grotesk";
 
 @theme {
   --color-background: #0b0b0c;
@@ -31,11 +31,15 @@
 }
 
 @utility heading-1 {
-  @apply font-bold text-4xl font-space-grotesk;
+  @apply font-bold text-[clamp(40px,7.6vw,78px)] font-space-grotesk;
 }
 
 @utility heading-2 {
-  @apply font-bold text-3xl font-space-grotesk;
+  @apply font-bold text-[clamp(30px,5vw,46px)] font-space-grotesk;
+}
+
+@utility heading-3 {
+  @apply font-bold text-xl font-space-grotesk;
 }
 
 @utility bg-fade-edge {

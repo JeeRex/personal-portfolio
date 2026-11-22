@@ -5,6 +5,10 @@ type TileProps = React.ComponentPropsWithoutRef<"div">;
 export const Tile = ({ className, ...props }: TileProps) => (
   <div
     {...props}
-    className={cn("size-20 shrink-0 rounded-2xl border border-border-primary bg-surface-primary", className)}
+    className={cn(
+      "flex justify-center items-center shrink-0",
+      "size-20 rounded-2xl border border-border-primary bg-surface-primary",
+      className
+    )}
   />
 );
