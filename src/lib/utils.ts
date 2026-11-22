@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 interface HoneycombGridOptions<T> {
   innerGridCols: number;
   paddingInline: number;
-  // items: T[];
+  items?: T[];
 }
 
 export function buildHoneycombGrid<T>({

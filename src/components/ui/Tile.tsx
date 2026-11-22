@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-interface TileProps extends React.ComponentPropsWithoutRef<"div"> {};
+type TileProps = React.ComponentPropsWithoutRef<"div">;
 
 export const Tile = ({ className, ...props }: TileProps) => (
   <div

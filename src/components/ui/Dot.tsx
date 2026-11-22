@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-interface DotProps extends Omit<React.ComponentPropsWithoutRef<"span">, "children"> {};
+type DotProps = Omit<React.ComponentPropsWithoutRef<"span">, "children">;
 
 export const Dot = ({ className, ...props }: DotProps) => (
   <span
