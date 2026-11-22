@@ -18,6 +18,7 @@ import {
   CPlusplus,
   Rust,
   DockerIcon,
+  GitIcon,
 } from "@dev.icons/react";
 
 const TechStack = () => {
@@ -36,11 +37,12 @@ const TechStack = () => {
     { name: "C++", Icon: CPlusplus, accent: "#649AD2" },
     { name: "Rust", Icon: Rust, accent: "#ca3500", className: "[&_path]:fill-[#ca3500] stroke-6 stroke-neutral-900" },
     { name: "Docker", Icon: DockerIcon, accent: "#2396ED" },
+    { name: "Git", Icon: GitIcon, accent: "#DE4C36" },
   ] satisfies { name: string; Icon: Icon, accent: string; className?: string }[];
 
   const honeyComb = buildHoneycombGrid({
-    innerGridCols: 4,
-    paddingInline: 5,
+    innerGridCols: 6,
+    paddingInline: 4,
     items: teckStack,
     offset: -1,
   });
@@ -96,7 +98,7 @@ export const Hero = () => (
       <Dot className="size-2 bg-accent-success ring-4 ring-accent-success/20" />
       Available for new projects
     </Badge>
-    <h1 className="mx-auto mt-6 max-w-250 heading-1 text-[clamp(40px,7.6vw,78px)]">
+    <h1 className="mx-auto mt-6 max-w-250 heading-1">
       Full-stack developer building <WordFlipper words={["secure", "fast", "reliable", "modern"]} /> software.
     </h1>
     <p className="mx-auto mt-5 max-w-170 text-[clamp(18px,2.2vw,20px)] text-foreground-muted">
