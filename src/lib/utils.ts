@@ -21,11 +21,11 @@ export function buildHoneycombGrid<T, P = null>({
   fillValue = null as P,
 }: HoneycombGridOptions<T, P>): (T | P)[][] {
   const isOdd = (value: number) => value % 2 !== 0;
-  const toMatrix = <T>(items: T[], columns: number): T[][] => {
+  const toMatrix = (items: T[], columns: number): T[][] => {
     const matrix: T[][] = [];
     let rowIndex = 0;
     for (let i = 0; i < items.length; ) {
-        const rowSize = isOdd(rowIndex + 1) ? columns + offset : columns;
+        const rowSize = Math.max(1, isOdd(rowIndex + 1) ? columns + offset : columns);
         matrix.push(items.slice(i, i + rowSize));
         i += rowSize; // Advance by the actual number of items sliced
         rowIndex++;
@@ -40,17 +40,19 @@ export function buildHoneycombGrid<T, P = null>({
     .map((arr, i) => {
       const outerIndex = i + 1;
       const columns = isOdd(outerIndex) ? innerGridCols + offset : innerGridCols;
-      const patch = Array(Math.max(0, columns - arr.length)).fill(fillValue);
+      const missingCells = Math.max(0, columns - arr.length);
+      const patch = Array.from({ length: missingCells }, () => fillValue);
       return [
-        ...Array(paddingInline).fill(fillValue),
-        ...arr.concat(patch),
-        ...Array(paddingInline).fill(fillValue),
+        ...Array.from({ length: paddingInline }, () => fillValue),
+        ...arr,
+        ...patch,
+        ...Array.from({ length: paddingInline }, () => fillValue),
       ];
     });
 
   return [
-    Array(outerGridCols).fill(fillValue),
+    Array.from({ length: outerGridCols }, () => fillValue),
     ...filled,
-    Array(isOdd(filled.length + 1) ? outerGridCols + offset : outerGridCols).fill(fillValue),
+    Array.from({ length: isOdd(filled.length + 1) ? outerGridCols + offset : outerGridCols }, () => fillValue),
   ];
 }

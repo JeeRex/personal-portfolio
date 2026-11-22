@@ -4,7 +4,7 @@ import { Button } from "./ui/Button";
 import { Dot } from "./ui/Dot";
 import { Tile } from "./ui/Tile";
 import { WordFlipper } from "./WordFlipper";
-import { Express, Html5, Mysql } from "@devicons-pack/react/original";
+import { Express, Html5, Linux, Mysql } from "@devicons-pack/react/original";
 import {
   _React as ReactIcon,
   Css,
@@ -20,44 +20,54 @@ import {
   DockerIcon,
   GitIcon,
 } from "@dev.icons/react";
+import { useBreakpoints } from "@/hooks/useMediaQuery";
+import { motion, useInView } from "motion/react";
+import { useRef, type CSSProperties } from "react";
+
+const TECH_STACK = [
+  { name: "HTML", Icon: Html5, accent: "#f16529" },
+  { name: "CSS", Icon: Css, accent: "#639" },
+  { name: "Javascript", Icon: Javascript, accent: "#F7DF1E" },
+  { name: "React", Icon: ReactIcon, accent: "#00D8FF" },
+  { name: "NodeJS", Icon: NodejsIcon, accent: "#539E43" },
+  { name: "ExpressJS", Icon: Express, accent: "#FFF", className: "fill-foreground-primary" },
+  { name: "NestJS", Icon: Nestjs, accent: "#E0234E" },
+  { name: "Python", Icon: Python, accent: "#FFE052" },
+  { name: "Django", Icon: DjangoIcon, accent: "#44B78B" },
+  { name: "PostgreSQL", Icon: Postgresql, accent: "#336791" },
+  { name: "MySQL", Icon: Mysql, accent: "#00618a" },
+  { name: "C++", Icon: CPlusplus, accent: "#649AD2" },
+  { name: "Rust", Icon: Rust, accent: "#ca3500", className: "[&_path]:fill-[#ca3500] stroke-6 stroke-neutral-900" },
+  { name: "Docker", Icon: DockerIcon, accent: "#2396ED" },
+  { name: "Git", Icon: GitIcon, accent: "#DE4C36" },
+  { name: "Linux", Icon: Linux, accent: "#FFF" },
+] satisfies { name: string; Icon: Icon, accent: string; className?: string }[];
 
 const TechStack = () => {
-  const teckStack = [
-    { name: "HTML", Icon: Html5, accent: "#f16529" },
-    { name: "CSS", Icon: Css, accent: "#639" },
-    { name: "Javascript", Icon: Javascript, accent: "#F7DF1E" },
-    { name: "React", Icon: ReactIcon, accent: "#00D8FF" },
-    { name: "NodeJS", Icon: NodejsIcon, accent: "#539E43" },
-    { name: "ExpressJS", Icon: Express, accent: "#FFF", className: "fill-foreground-primary" },
-    { name: "NestJS", Icon: Nestjs, accent: "#E0234E" },
-    { name: "Python", Icon: Python, accent: "#FFE052" },
-    { name: "Django", Icon: DjangoIcon, accent: "#44B78B" },
-    { name: "PostgreSQL", Icon: Postgresql, accent: "#336791" },
-    { name: "MySQL", Icon: Mysql, accent: "#00618a" },
-    { name: "C++", Icon: CPlusplus, accent: "#649AD2" },
-    { name: "Rust", Icon: Rust, accent: "#ca3500", className: "[&_path]:fill-[#ca3500] stroke-6 stroke-neutral-900" },
-    { name: "Docker", Icon: DockerIcon, accent: "#2396ED" },
-    { name: "Git", Icon: GitIcon, accent: "#DE4C36" },
-  ] satisfies { name: string; Icon: Icon, accent: string; className?: string }[];
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const { lg, md, sm } = useBreakpoints();
 
   const honeyComb = buildHoneycombGrid({
-    innerGridCols: 6,
-    paddingInline: 4,
-    items: teckStack,
+    innerGridCols: lg ? 6 : md ? 5 : sm ? 4 : 3,
+    paddingInline: lg ? 5 : md ? 4 : sm ? 3 : 2,
+    items: TECH_STACK,
     offset: -1,
   });
 
-  console.log(honeyComb);
-
   return (
-    <div className="
-      relative flex justify-center overflow-x-hidden mt-14 mx-auto
-      after:absolute
-      after:w-full
-      after:h-full
-      after:bg-fade-edge
-      after:pointer-events-none
-    ">
+    <motion.div
+      ref={ref}
+      initial={{ "--vig-from-position": "0%" }}
+      animate={{ "--vig-from-position": isInView ? "85%" : "0%" }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+      className="
+        relative flex justify-center overflow-x-hidden mt-14 mx-auto
+        after:absolute after:inset-0
+        after:bg-fade-edge
+        after:pointer-events-none
+      "
+    >
       <div className="relative flex flex-col gap-4.5 left-12">
         {honeyComb.map((row, i) => {
           const isOddRow = (i+1) % 2 !== 0;
@@ -66,29 +76,38 @@ const TechStack = () => {
               key={i}
               className={cn("relative flex gap-4", { "-left-12": isOddRow })}
             >
-              {row.map((item, i) => (
-                <Tile key={item?.name ?? i} className="size-20 flex-col gap-1.5">
-                  {item && (
-                    <>
-                      <item.Icon
-                        className={cn("size-8", item.className)}
-                        style={{ filter: `drop-shadow(0 0 5px ${item.accent})` }}
-                      />
-                      <span
-                        className="text-xs font-medium font-space-grotesk"
-                        style={{ color: item.accent }}
-                      >
-                        {item.name}
-                      </span>
-                    </>
-                  )}
-                </Tile>
-              ))}
+              {row.map((item, i) => {
+                if (!item) return <Tile key={i} className="size-20 flex-col gap-1.5 shadow-[0_4px_10px_-1px_#00000080]" />
+                const Icon = item.Icon;
+                
+                return (
+                  <Tile
+                    key={item.name}
+                    style={{ "--tile-accent": item.accent } as CSSProperties}
+                    className="
+                      size-20 flex-col gap-1.5 ring-2 ring-transparent shadow-[0_4px_20px_-5px_#00000080]
+                      transition-shadow duration-3000 hover:duration-150 hover:ring-(--tile-accent)
+                      hover:shadow-[0_14px_30px_-10px_color-mix(in_srgb,var(--tile-accent)_80%,transparent)]
+                    "
+                  >
+                    <Icon
+                      className={cn("size-8", item.className)}
+                      style={{ filter: `drop-shadow(0 0 5px ${item.accent})` }}
+                    />
+                    <span
+                      className="text-xs font-medium font-space-grotesk"
+                      style={{ color: item.accent }}
+                    >
+                      {item.name}
+                    </span>
+                  </Tile>
+                );
+              })}
             </div>
           );
         })}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
