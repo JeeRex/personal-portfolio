@@ -21,6 +21,8 @@ import {
   GitIcon,
 } from "@dev.icons/react";
 import { useBreakpoints } from "@/hooks/useMediaQuery";
+import { motion, useInView } from "motion/react";
+import { useRef, type CSSProperties } from "react";
 
 const TECH_STACK = [
   { name: "HTML", Icon: Html5, accent: "#f16529" },
@@ -42,6 +44,8 @@ const TECH_STACK = [
 ] satisfies { name: string; Icon: Icon, accent: string; className?: string }[];
 
 const TechStack = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.5 });
   const { lg, md, sm } = useBreakpoints();
 
   const honeyComb = buildHoneycombGrid({
@@ -52,14 +56,18 @@ const TechStack = () => {
   });
 
   return (
-    <div className="
-      relative flex justify-center overflow-x-hidden mt-14 mx-auto
-      after:absolute
-      after:w-full
-      after:h-full
-      after:bg-fade-edge
-      after:pointer-events-none
-    ">
+    <motion.div
+      ref={ref}
+      initial={{ "--vig-from-position": "0%" }}
+      animate={{ "--vig-from-position": isInView ? "85%" : "0%" }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+      className="
+        relative flex justify-center overflow-x-hidden mt-14 mx-auto
+        after:absolute after:inset-0
+        after:bg-fade-edge
+        after:pointer-events-none
+      "
+    >
       <div className="relative flex flex-col gap-4.5 left-12">
         {honeyComb.map((row, i) => {
           const isOddRow = (i+1) % 2 !== 0;
@@ -68,29 +76,38 @@ const TechStack = () => {
               key={i}
               className={cn("relative flex gap-4", { "-left-12": isOddRow })}
             >
-              {row.map((item, i) => (
-                <Tile key={item?.name ?? i} className="size-20 flex-col gap-1.5">
-                  {item && (
-                    <>
-                      <item.Icon
-                        className={cn("size-8", item.className)}
-                        style={{ filter: `drop-shadow(0 0 5px ${item.accent})` }}
-                      />
-                      <span
-                        className="text-xs font-medium font-space-grotesk"
-                        style={{ color: item.accent }}
-                      >
-                        {item.name}
-                      </span>
-                    </>
-                  )}
-                </Tile>
-              ))}
+              {row.map((item, i) => {
+                if (!item) return <Tile key={i} className="size-20 flex-col gap-1.5 shadow-[0_4px_10px_-1px_#00000080]" />
+                const Icon = item.Icon;
+                
+                return (
+                  <Tile
+                    key={item.name}
+                    style={{ "--tile-accent": item.accent } as CSSProperties}
+                    className="
+                      size-20 flex-col gap-1.5 ring-2 ring-transparent shadow-[0_4px_20px_-5px_#00000080]
+                      transition-shadow duration-3000 hover:duration-150 hover:ring-(--tile-accent)
+                      hover:shadow-[0_14px_30px_-10px_color-mix(in_srgb,var(--tile-accent)_80%,transparent)]
+                    "
+                  >
+                    <Icon
+                      className={cn("size-8", item.className)}
+                      style={{ filter: `drop-shadow(0 0 5px ${item.accent})` }}
+                    />
+                    <span
+                      className="text-xs font-medium font-space-grotesk"
+                      style={{ color: item.accent }}
+                    >
+                      {item.name}
+                    </span>
+                  </Tile>
+                );
+              })}
             </div>
           );
         })}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
