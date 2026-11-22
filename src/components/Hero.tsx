@@ -4,7 +4,7 @@ import { Button } from "./ui/Button";
 import { Dot } from "./ui/Dot";
 import { Tile } from "./ui/Tile";
 import { WordFlipper } from "./WordFlipper";
-import { Express, Html5, Mysql } from "@devicons-pack/react/original";
+import { Express, Html5, Linux, Mysql } from "@devicons-pack/react/original";
 import {
   _React as ReactIcon,
   Css,
@@ -20,34 +20,38 @@ import {
   DockerIcon,
   GitIcon,
 } from "@dev.icons/react";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+
+const TECH_STACK = [
+  { name: "HTML", Icon: Html5, accent: "#f16529" },
+  { name: "CSS", Icon: Css, accent: "#639" },
+  { name: "Javascript", Icon: Javascript, accent: "#F7DF1E" },
+  { name: "React", Icon: ReactIcon, accent: "#00D8FF" },
+  { name: "NodeJS", Icon: NodejsIcon, accent: "#539E43" },
+  { name: "ExpressJS", Icon: Express, accent: "#FFF", className: "fill-foreground-primary" },
+  { name: "NestJS", Icon: Nestjs, accent: "#E0234E" },
+  { name: "Python", Icon: Python, accent: "#FFE052" },
+  { name: "Django", Icon: DjangoIcon, accent: "#44B78B" },
+  { name: "PostgreSQL", Icon: Postgresql, accent: "#336791" },
+  { name: "MySQL", Icon: Mysql, accent: "#00618a" },
+  { name: "C++", Icon: CPlusplus, accent: "#649AD2" },
+  { name: "Rust", Icon: Rust, accent: "#ca3500", className: "[&_path]:fill-[#ca3500] stroke-6 stroke-neutral-900" },
+  { name: "Docker", Icon: DockerIcon, accent: "#2396ED" },
+  { name: "Git", Icon: GitIcon, accent: "#DE4C36" },
+  { name: "Linux", Icon: Linux, accent: "#FFF" },
+] satisfies { name: string; Icon: Icon, accent: string; className?: string }[];
 
 const TechStack = () => {
-  const teckStack = [
-    { name: "HTML", Icon: Html5, accent: "#f16529" },
-    { name: "CSS", Icon: Css, accent: "#639" },
-    { name: "Javascript", Icon: Javascript, accent: "#F7DF1E" },
-    { name: "React", Icon: ReactIcon, accent: "#00D8FF" },
-    { name: "NodeJS", Icon: NodejsIcon, accent: "#539E43" },
-    { name: "ExpressJS", Icon: Express, accent: "#FFF", className: "fill-foreground-primary" },
-    { name: "NestJS", Icon: Nestjs, accent: "#E0234E" },
-    { name: "Python", Icon: Python, accent: "#FFE052" },
-    { name: "Django", Icon: DjangoIcon, accent: "#44B78B" },
-    { name: "PostgreSQL", Icon: Postgresql, accent: "#336791" },
-    { name: "MySQL", Icon: Mysql, accent: "#00618a" },
-    { name: "C++", Icon: CPlusplus, accent: "#649AD2" },
-    { name: "Rust", Icon: Rust, accent: "#ca3500", className: "[&_path]:fill-[#ca3500] stroke-6 stroke-neutral-900" },
-    { name: "Docker", Icon: DockerIcon, accent: "#2396ED" },
-    { name: "Git", Icon: GitIcon, accent: "#DE4C36" },
-  ] satisfies { name: string; Icon: Icon, accent: string; className?: string }[];
+  const sm = useMediaQuery("(min-width: 640px)");
+  const md = useMediaQuery("(min-width: 768px)");
+  const lg = useMediaQuery("(min-width: 1024px)");
 
   const honeyComb = buildHoneycombGrid({
-    innerGridCols: 6,
-    paddingInline: 4,
-    items: teckStack,
+    innerGridCols: lg ? 6 : md ? 5 : sm ? 4 : 3,
+    paddingInline: lg ? 5 : md ? 4 : sm ? 3 : 2,
+    items: TECH_STACK,
     offset: -1,
   });
-
-  console.log(honeyComb);
 
   return (
     <div className="
